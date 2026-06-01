@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>黒猫スタンプ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fff7f3; --card:#ffffff; --ink:#4a3b38; --accent:#f6a8c0;
+      --line:#e9d8cf;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN',sans-serif;
+      padding-bottom:60px;
+    }
+    .page{max-width:980px; margin:0 auto; padding:24px 16px;}
+    .title{
+      text-align:center; font-family:'Mochiy Pop One',sans-serif;
+      font-size:30px; margin:14px 0 4px; color:#3a2e2b;
+    }
+    .title .paw{color:#3a2e2b;}
+    .subtitle{text-align:center; font-size:14px; color:#9b857d; margin-bottom:22px;}
+
+    /* 特徴カード */
+    .feature{
+      background:#fdeee8; border-radius:18px; padding:16px 20px;
+      margin:0 auto 26px; max-width:640px; border:1px solid var(--line);
+    }
+    .feature h2{
+      font-size:17px; margin:0 0 10px; text-align:center; color:#5b4843;
+    }
+    .feature ul{margin:0; padding-left:4px; list-style:none;}
+    .feature li{font-size:14px; line-height:1.9;}
+    .feature li::before{content:"🐾 ";}
+    .feature .note{
+      margin-top:10px; font-size:13px; color:#b07d86; text-align:center;
+    }
+
+    /* スタンプグリッド */
+    .grid{
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+      gap:14px;
+    }
+    .card{
+      background:var(--card); border-radius:18px; padding:10px 8px 12px;
+      text-align:center; border:1px solid var(--line);
+      box-shadow:0 4px 10px rgba(180,140,130,.08);
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .card:hover{transform:translateY(-3px); box-shadow:0 8px 18px rgba(180,140,130,.16);}
+    .art{display:flex; justify-content:center; align-items:center;}
+    .art svg{width:130px; height:auto;}
+    .cap{font-size:15px; font-weight:700; margin:4px 0 8px; color:#3a2e2b;}
+    .dl{
+      font-family:inherit; font-size:12px; cursor:pointer;
+      border:none; background:#f6a8c0; color:#fff; font-weight:700;
+      padding:6px 14px; border-radius:999px;
+    }
+    .dl:hover{background:#ef94b1;}
+    .dlall{
+      display:block; margin:26px auto 0; font-size:14px; cursor:pointer;
+      border:none; background:#7a6a64; color:#fff; font-weight:700;
+      padding:11px 26px; border-radius:999px;
+    }
+    .dlall:hover{background:#665852;}
+    .back{display:inline-block; margin-bottom:8px; color:#9b857d; font-size:13px; text-decoration:none;}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← トップへ</a>
+    <h1 class="title"><span class="paw">🐾</span> 黒猫スタンプ <span class="paw">🐾</span></h1>
+    <p class="subtitle">全16種 ・ つやのある黒猫のゆるかわスタンプ</p>
+
+    <div class="feature">
+      <h2>🐾 黒猫の特徴 🐾</h2>
+      <ul>
+        <li>つやのある黒い毛並み</li>
+        <li>黄色やグリーンの目が多い</li>
+        <li>ひとなっこくて甘えんぼうな子が多い</li>
+        <li>賢くて警戒心が強い一面も</li>
+        <li>神秘的で縁起がいいとされることも！</li>
+      </ul>
+      <div class="note">実は毛の色で性格は変わらないよ！それぞれの子がみんな魅力的♪</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <button class="dlall" id="dlall">⬇ ぜんぶPNGでダウンロード</button>
+  </div>
+
+  <script>
+    const C = {
+      black:'#1d1b1a', line:'#c89b62', eye:'#f4c63a', pupil:'#262220',
+      inner:'#6e5048', nose:'#d98c93', heart:'#f48aa6', purple:'#9b8cd6',
+      spark:'#ffd25a', boxLine:'#b5894f'
+    };
+
+    /* ---- パーツ ---- */
+    function ears(){
+      return `
+        <path d="M50 52 L42 14 L82 40 Z" fill="${C.black}" stroke="${C.line}" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M110 52 L118 14 L78 40 Z" fill="${C.black}" stroke="${C.line}" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M56 44 L52 25 L72 40 Z" fill="${C.inner}"/>
+        <path d="M104 44 L108 25 L88 40 Z" fill="${C.inner}"/>`;
+    }
+    function headCircle(){
+      return `<circle cx="80" cy="66" r="36" fill="${C.black}" stroke="${C.line}" stroke-width="2"/>`;
+    }
+    function sitBody(){
+      return `
+        <path d="M80 92 C116 92 126 120 122 144 C120 160 100 166 80 166 C60 166 40 160 38 144 C34 120 44 92 80 92 Z" fill="${C.black}" stroke="${C.line}" stroke-width="2"/>
+        <ellipse cx="64" cy="162" rx="11" ry="7" fill="${C.black}" stroke="${C.line}" stroke-width="2"/>
+        <ellipse cx="96" cy="162" rx="11" ry="7" fill="${C.black}" stroke="${C.line}" stroke-width="2"/>`;
+    }
+    function blush(){
+      return `<g fill="#f3a6b4" opacity="0.75"><ellipse cx="50" cy="82" rx="7" ry="4.5"/><ellipse cx="110" cy="82" rx="7" ry="4.5"/></g>`;
+    }
+    function sparkle(cx,cy,s){
+      return `<path transform="translate(${cx},${cy}) scale(${s/8})" d="M0 -8 C0.6 -2 2 -0.6 8 0 C2 0.6 0.6 2 0 8 C-0.6 2 -2 0.6 -8 0 C-2 -0.6 -0.6 -2 0 -8 Z"/>`;
+    }
+    function heart(cx,cy,s){
+      return `<path transform="translate(${cx},${cy}) scale(${s/16})" d="M0 6 C0 1 -4 -5 -9 -5 C-15 -5 -16 2 -16 6 C-16 12 -8 17 0 23 C8 17 16 12 16 6 C16 2 15 -5 9 -5 C4 -5 0 1 0 6 Z"/>`;
+    }
+    function flower(cx,cy){
+      let p='';
+      for(let a=0;a<360;a+=72){
+        p += `<circle cx="${(cx+9*Math.cos(a*Math.PI/180)).toFixed(1)}" cy="${(cy+9*Math.sin(a*Math.PI/180)).toFixed(1)}" r="5" fill="#f6a8c0"/>`;
+      }
+      return p + `<circle cx="${cx}" cy="${cy}" r="4" fill="${C.spark}"/>`;
+    }
+
+    /* 目 */
+    function eyesSVG(expr){
+      if(expr==='happy'){
+        return `<path d="M55 71 Q65 61 75 71" fill="none" stroke="#241f1d" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M85 71 Q95 61 105 71" fill="none" stroke="#241f1d" stroke-width="3.5" stroke-linecap="round"/>${blush()}`;
+      }
+      if(expr==='sleep'){
+        return `<path d="M55 69 Q65 77 75 69" fill="none" stroke="#241f1d" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M85 69 Q95 77 105 69" fill="none" stroke="#241f1d" stroke-width="3.5" stroke-linecap="round"/>`;
+      }
+      if(expr==='surprise'){
+        return `<ellipse cx="65" cy="69" rx="11" ry="13" fill="${C.eye}"/>
+          <ellipse cx="95" cy="69" rx="11" ry="13" fill="${C.eye}"/>
+          <circle cx="65" cy="70" r="3.5" fill="${C.pupil}"/>
+          <circle cx="95" cy="70" r="3.5" fill="${C.pupil}"/>`;
+      }
+      if(expr==='star'){
+        return `<g fill="#fff">${sparkle(65,70,12)}${sparkle(95,70,12)}</g>${blush()}`;
+      }
+      // open
+      return `<ellipse cx="65" cy="70" rx="9.5" ry="12" fill="${C.eye}"/>
+        <ellipse cx="95" cy="70" rx="9.5" ry="12" fill="${C.eye}"/>
+        <ellipse cx="66" cy="73" rx="4" ry="7" fill="${C.pupil}"/>
+        <ellipse cx="94" cy="73" rx="4" ry="7" fill="${C.pupil}"/>
+        <circle cx="62" cy="66" r="2.4" fill="#fff"/>
+        <circle cx="91" cy="66" r="2.4" fill="#fff"/>`;
+    }
+    function faceFor(expr){
+      const nose = `<path d="M75 84 L85 84 L80 90 Z" fill="${C.nose}"/>`;
+      const mouth = expr==='surprise'
+        ? `<ellipse cx="80" cy="99" rx="6" ry="8" fill="#7a3b42"/>`
+        : `<path d="M80 90 Q73 97 67 92 M80 90 Q87 97 93 92" fill="none" stroke="#241f1d" stroke-width="2.2" stroke-linecap="round"/>`;
+      const whiskers = `<g stroke="${C.line}" stroke-width="1.6" stroke-linecap="round">
+        <line x1="46" y1="74" x2="22" y2="70"/><line x1="46" y1="80" x2="22" y2="82"/>
+        <line x1="114" y1="74" x2="138" y2="70"/><line x1="114" y1="80" x2="138" y2="82"/></g>`;
+      return nose + mouth + whiskers;
+    }
+
+    /* 腕 */
+    function armSVG(arm){
+      const st = `fill="${C.black}" stroke="${C.line}" stroke-width="2"`;
+      if(arm==='wave'){
+        return `<path d="M108 106 Q132 96 126 72 Q123 62 113 70 Q112 92 100 106 Z" ${st}/>
+          <g stroke="#f6a8c0" stroke-width="2.4" stroke-linecap="round">
+            <line x1="132" y1="58" x2="140" y2="52"/><line x1="130" y1="50" x2="135" y2="42"/></g>`;
+      }
+      if(arm==='up'){
+        return `<path d="M58 108 Q42 84 52 66 Q58 56 67 66 Q67 90 72 108 Z" ${st}/>
+          <path d="M102 108 Q118 84 108 66 Q102 56 93 66 Q93 90 88 108 Z" ${st}/>`;
+      }
+      if(arm==='together'){
+        return `<ellipse cx="72" cy="114" rx="11" ry="9" ${st}/>
+          <ellipse cx="88" cy="114" rx="11" ry="9" ${st}/>`;
+      }
+      return '';
+    }
+
+    /* 前面の小物 */
+    function heartHold(){
+      const st = `fill="${C.black}" stroke="${C.line}" stroke-width="2"`;
+      return `<g fill="${C.heart}" stroke="#e07a98" stroke-width="1.5">${heart(80,114,20)}</g>
+        <ellipse cx="62" cy="126" rx="11" ry="9" ${st}/>
+        <ellipse cx="98" cy="126" rx="11" ry="9" ${st}/>`;
+    }
+    function ruler(){
+      let ticks='';
+      for(let y=20;y<162;y+=12){ ticks += `<line x1="34" y1="${y}" x2="44" y2="${y}" stroke="${C.boxLine}" stroke-width="2"/>`; }
+      return `<rect x="14" y="8" width="30" height="160" rx="4" fill="#e7d3a1" stroke="${C.boxLine}" stroke-width="2"/>${ticks}`;
+    }
+    function boxFront(){
+      return `<path d="M34 124 L126 124 L120 170 L40 170 Z" fill="#dcb985" stroke="${C.boxLine}" stroke-width="2"/>
+        <path d="M34 124 L20 110 L112 110 L126 124 Z" fill="#cda468" stroke="${C.boxLine}" stroke-width="2"/>`;
+    }
+    function boxBack(){
+      return `<path d="M30 110 L52 94 L150 94 L130 110 Z" fill="#d8b483" stroke="${C.boxLine}" stroke-width="2"/>`;
+    }
+    function hand(){
+      return `<g fill="#f4d4b2" stroke="${C.boxLine}" stroke-width="1.5">
+        <ellipse cx="80" cy="22" rx="26" ry="13"/>
+        <rect x="58" y="16" width="9" height="20" rx="4"/>
+        <rect x="70" y="14" width="9" height="22" rx="4"/>
+        <rect x="82" y="14" width="9" height="22" rx="4"/>
+        <rect x="94" y="16" width="9" height="20" rx="4"/></g>`;
+    }
+    function motion(kind){
+      if(kind==='shock'){
+        return `<g stroke="#ff9a3c" stroke-width="3.5" stroke-linecap="round">
+          <line x1="26" y1="32" x2="14" y2="24"/><line x1="38" y1="22" x2="34" y2="8"/>
+          <line x1="134" y1="32" x2="146" y2="24"/><line x1="122" y1="22" x2="126" y2="8"/></g>`;
+      }
+      return `<g stroke="#f6a8c0" stroke-width="3.5" stroke-linecap="round">
+        <line x1="22" y1="86" x2="7" y2="86"/><line x1="24" y1="100" x2="10" y2="102"/><line x1="22" y1="114" x2="9" y2="116"/></g>`;
+    }
+    function accSVG(acc){
+      switch(acc){
+        case 'hearts':  return `<g fill="${C.heart}">${heart(26,54,13)}${heart(134,54,13)}</g>`;
+        case 'question':return `<text x="112" y="44" font-family="'Mochiy Pop One',sans-serif" font-size="34" fill="${C.purple}">?</text>`;
+        case 'flower':  return `${flower(24,54)}${flower(136,54)}`;
+        case 'zzz':     return `<text x="108" y="34" font-family="'Mochiy Pop One',sans-serif" font-size="22" fill="${C.purple}">zzz</text>`;
+        case 'sparkle': return `<g fill="${C.spark}">${sparkle(28,46,11)}${sparkle(134,58,8)}${sparkle(120,36,6)}</g>`;
+        case 'hand':    return hand();
+        case 'miniheart':return `<g fill="${C.heart}">${heart(122,96,12)}</g>`;
+        default: return '';
+      }
+    }
+
+    /* 後ろ向き（ふーん） */
+    function backCat(){
+      return `
+        <path d="M50 54 L42 16 L82 42 Z" fill="${C.black}" stroke="${C.line}" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M110 54 L118 16 L78 42 Z" fill="${C.black}" stroke="${C.line}" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M122 152 C152 150 150 108 132 96" fill="none" stroke="${C.black}" stroke-width="13" stroke-linecap="round"/>
+        <path d="M80 40 C118 40 126 86 122 126 C119 152 100 162 80 162 C60 162 41 152 38 126 C34 86 42 40 80 40 Z" fill="${C.black}" stroke="${C.line}" stroke-width="2"/>`;
+    }
+
+    function svgWrap(inner){
+      return `<svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+    }
+
+    function buildSVG(c){
+      if(c.pose==='back') return svgWrap(backCat());
+      let behind='';
+      if(c.acc==='motion') behind += motion('move');
+      if(c.acc==='shock')  behind += motion('shock');
+      if(c.box)            behind += boxBack();
+
+      const tilt = c.tilt ? `transform="rotate(${c.tilt} 80 100)"` : '';
+      const inner = `${ears()}${sitBody()}${armSVG(c.arm)}${headCircle()}${eyesSVG(c.expr)}${faceFor(c.expr)}`;
+
+      let front = accSVG(c.acc);
+      if(c.arm==='heart') front += heartHold();
+      if(c.acc==='ruler') front += ruler();
+      if(c.box)           front += boxFront();
+
+      return svgWrap(`${behind}<g ${tilt}>${inner}</g>${front}`);
+    }
+
+    /* ---- 16種データ ---- */
+    const STAMPS = [
+      {cap:'はーい！',       expr:'open',     arm:'wave'},
+      {cap:'ありがとう！',    expr:'happy',    arm:'together', acc:'hearts'},
+      {cap:'だいすき！',      expr:'open',     arm:'heart'},
+      {cap:'なにしてるの？',  expr:'open',     acc:'question'},
+      {cap:'うれしい！',      expr:'happy',    arm:'wave',     acc:'flower'},
+      {cap:'おやすみ…',      expr:'sleep',    acc:'zzz'},
+      {cap:'ちらっ',         expr:'open',     acc:'ruler'},
+      {cap:'ふーん',         pose:'back'},
+      {cap:'いってきます！',  expr:'open',     acc:'motion'},
+      {cap:'わーい！',        expr:'happy',    arm:'up',       acc:'sparkle'},
+      {cap:'おねがい…',      expr:'star',     arm:'together'},
+      {cap:'ごろーん',        expr:'happy',    arm:'up',       tilt:18},
+      {cap:'なでて〜',        expr:'happy',    acc:'hand'},
+      {cap:'びっくり！',      expr:'surprise', acc:'shock'},
+      {cap:'お気に入り！',    expr:'open',     box:true},
+      {cap:'にゃ〜ん♪',      expr:'open',     acc:'miniheart'} // ← 左上のイラスト枠（16個目）
+    ];
+
+    /* ---- 描画 ---- */
+    const grid = document.getElementById('grid');
+    STAMPS.forEach((c,i)=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<div class="art">${buildSVG(c)}</div>
+        <div class="cap">${c.cap}</div>
+        <button class="dl" type="button">⬇ PNG</button>`;
+      card.querySelector('.dl').addEventListener('click', ()=>{
+        downloadPNG(card.querySelector('svg'), 'kuroneko_' + String(i+1).padStart(2,'0'));
+      });
+      grid.appendChild(card);
+    });
+
+    /* ---- PNG書き出し（透過・高解像度） ---- */
+    function downloadPNG(svgEl, name){
+      const xml = new XMLSerializer().serializeToString(svgEl);
+      const url = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(xml)));
+      const img = new Image();
+      img.onload = ()=>{
+        const s = 4;
+        const canvas = document.createElement('canvas');
+        canvas.width = 160 * s; canvas.height = 180 * s;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(b=>{
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(b);
+          a.download = name + '.png';
+          a.click();
+          URL.revokeObjectURL(a.href);
+        });
+      };
+      img.src = url;
+    }
+
+    document.getElementById('dlall').addEventListener('click', ()=>{
+      const svgs = document.querySelectorAll('.card svg');
+      svgs.forEach((svg,i)=> setTimeout(()=>downloadPNG(svg, 'kuroneko_' + String(i+1).padStart(2,'0')), i*250));
+    });
+  </script>
+</body>
+</html>
