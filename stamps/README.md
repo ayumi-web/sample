@@ -22,7 +22,7 @@
 | `kuroneko_13.png` | なでて〜 |
 | `kuroneko_14.png` | びっくり！ |
 | `kuroneko_15.png` | お気に入り！ |
-| `kuroneko_16.png` | にゃ〜ん♪ |
+| `kuroneko_16.png` | にゃ〜ん♪（＝参考画像の左上の大きめの子。座り姿＋小さいハート） |
 
 ## 画像の条件（LINE Creators Market）
 
